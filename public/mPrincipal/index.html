@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroBioHub - 2025 NASA Space Apps Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-space: #0a0a1a;
+            --cosmic-purple: #6a0dad;
+            --nebula-blue: #1a1a8a;
+            --stardust: #e6e6ff;
+            --galaxy-pink: #c71585;
+            --supernova: #ffd700;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: #000;
+            color: var(--stardust);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .cosmic-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+            background: linear-gradient(135deg, #000 0%, #0a0a2a 50%, #000 100%);
+            animation: bgShift 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { background: linear-gradient(135deg, #000 0%, #0a0a2a 50%, #000 100%); }
+            100% { background: linear-gradient(135deg, #000 0%, #1a1a3a 50%, #000 100%); }
+        }
+
+        #starCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 0%, rgba(0,0,0,0.6) 100%); pointer-events: none; z-index: 0; }
+        .floating-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; }
+        .floating-element { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; animation: floatElement 20s infinite ease-in-out; }
+        .element-1 { width: 400px; height: 400px; background: radial-gradient(circle, #ff00ff, transparent 70%); top: 10%; left: 10%; animation-delay: 0s; }
+        .element-2 { width: 300px; height: 300px; background: radial-gradient(circle, #00ffff, transparent 70%); top: 60%; right: 10%; animation-delay: 5s; }
+        .element-3 { width: 350px; height: 350px; background: radial-gradient(circle, #ffff00, transparent 70%); bottom: 10%; left: 20%; animation-delay: 10s; }
+        @keyframes floatElement {
+            0%, 100% { transform: translate(0, 0) scale(1); } 25% { transform: translate(40px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 40px) scale(0.9); } 75% { transform: translate(30px, 20px) scale(1.05); }
+        }
+
+        .container { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .container-header { position: relative; z-index: 2; max-width: 100%; margin: 0; padding: 0 40px; }
+        
+        header { padding: 20px 0; position: sticky; top: 0; z-index: 1000; background: rgba(10, 10, 26, 0.7); backdrop-filter: blur(10px); }
+        .navbar { 
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center;
+            gap: 50px;
+        }
+        .logo { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            background: linear-gradient(45deg, var(--supernova), var(--galaxy-pink)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            flex-shrink: 0;
+        }
+        .nav-links { 
+            display: flex; 
+            gap: 30px; 
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .nav-links a { 
+            color: var(--stardust); 
+            text-decoration: none; 
+            font-weight: 500; 
+            font-size: 1rem; 
+            transition: color 0.3s ease; 
+            white-space: nowrap;
+        }
+        .nav-links a:hover { color: var(--supernova); }
+        
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--galaxy-pink), var(--supernova));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            color: white;
+        }
+
+        .hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 0; }
+        .hero-title { font-size: 4rem; font-weight: 800; margin-bottom: 20px; background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbow 4s ease infinite; text-shadow: 0 0 30px rgba(255, 0, 255, 0.5); line-height: 1.2; }
+        @keyframes rainbow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .hero-subtitle { font-size: 1.5rem; color: #00ffff; letter-spacing: 5px; text-transform: uppercase; animation: glow 2s ease-in-out infinite alternate; }
+        @keyframes glow { from { text-shadow: 0 0 10px #00ffff; } to { text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff; } }
+
+        section { padding: 100px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .section-title { font-size: 3.5rem; text-align: center; margin-bottom: 60px; background: linear-gradient(90deg, #ff00ff, #00ffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-content { max-width: 900px; margin: 0 auto; }
+        .section-content h3 { font-size: 2.5rem; margin-top: 50px; margin-bottom: 20px; color: var(--supernova); }
+        .section-content h4 { font-size: 1.8rem; margin-top: 40px; margin-bottom: 15px; color: #00ffff; border-left: 3px solid #00ffff; padding-left: 15px; }
+        .section-content h5 { font-size: 1.4rem; margin-top: 30px; margin-bottom: 10px; color: var(--stardust); }
+        .section-content p, .section-content ul { font-size: 1.2rem; line-height: 1.8; color: #ccc; margin-bottom: 20px; }
+        .section-content ul { list-style-position: inside; padding-left: 20px; }
+        .section-content li { margin-bottom: 10px; }
+        .section-content pre {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.15), rgba(26, 26, 138, 0.15));
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', Courier, monospace;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.1);
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .section-content code {
+            color: #e6e6ff;
+            font-size: 1.1rem;
+        }
+
+        .content-image {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 25px auto;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .team-member { text-align: center; }
+        .team-member img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        .team-member h4 { font-size: 1.5rem; margin: 15px 0 5px 0; color: var(--stardust); border: none; padding: 0; }
+        .team-member p { font-size: 1.1rem; color: #aaa; margin: 0; }
+
+        .hackathon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .hackathon-grid img {
+            width: 100%;
+            border-radius: 15px;
+        }
+        
+        footer { background: rgba(10, 10, 26, 0.8); padding: 50px 0; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .footer-text { color: rgba(230, 230, 255, 0.7); font-size: 1rem; }
+        .footer-text a { color: var(--supernova); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+            .section-title { font-size: 2.5rem; }
+            .navbar { flex-direction: column; gap: 20px; align-items: flex-start; }
+            .logo { margin-bottom: 10px; }
+            .nav-links { flex-direction: column; gap: 15px; width: 100%; }
+            .nav-btn { width: 100%; text-align: center; }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--cosmic-purple), var(--nebula-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(106, 13, 173, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(106, 13, 173, 0.6);
+        }
+
+        .detailed-flow ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .detailed-flow ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .detailed-flow ul li::before {
+            content: '➤';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--supernova);
+            font-size: 1.2rem;
+        }
+
+        /* FÓRMULAS MEJORADAS */
+        .formula-box {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.2), rgba(26, 26, 138, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+        }
+
+        .formula {
+            font-size: 1.8rem;
+            color: var(--stardust);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .formula .var {
+            color: var(--supernova);
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .formula .operator {
+            color: #00ffff;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .formula .sigma {
+            font-size: 2.5rem;
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .formula .parenthesis {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 2rem;
+        }
+
+        /* TABLA MEJORADA */
+        .weights-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+        }
+
+        .weights-table thead {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.3), rgba(26, 26, 138, 0.3));
+        }
+
+        .weights-table th {
+            padding: 20px;
+            text-align: left;
+            color: var(--supernova);
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .weights-table tbody tr {
+            background: rgba(10, 10, 26, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .weights-table tbody tr:hover {
+            background: rgba(106, 13, 173, 0.2);
+            transform: translateX(5px);
+        }
+
+        .weights-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #ccc;
+        }
+
+        .weights-table td:nth-child(2) {
+            font-weight: bold;
+            color: #00ffff;
+            font-size: 1.2rem;
+        }
+
+        .weights-table .note {
+            color: #999;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .weights-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* EJEMPLO DE CÁLCULO MEJORADO */
+        .calc-example {
+            background: linear-gradient(135deg, rgba(26, 26, 138, 0.15), rgba(106, 13, 173, 0.15));
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid var(--supernova);
+            margin: 25px 0;
+        }
+
+        .calc-example h5 {
+            color: var(--supernova);
+            margin-bottom: 15px;
+        }
+
+        .calc-step {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .calc-step::before {
+            content: '✓';
+            color: #00ffff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* Este es el estilo principal del botón */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--cosmic-purple), var(--nebula-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(106, 13, 173, 0.4);
+        }
+
+        /* Este es el efecto cuando pasas el ratón por encima */
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(106, 13, 173, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+    <div class="cosmic-bg"></div>
+    <div class="floating-elements">
+        <div class="floating-element element-1"></div>
+        <div class="floating-element element-2"></div>
+        <div class="floating-element element-3"></div>
+    </div>
+    <div class="overlay"></div>
+
+    <header>
+        <div class="container-header">
+            <nav class="navbar">
+                <div class="logo">AstroBioHub</div>
+                <div class="nav-links">
+                    <a href="#team">Team</a>
+                    <a href="#astrobiuhub">AstroBioHub</a>
+                    <a href="#academic">Academic Mode</a>
+                    <a href="#discover">Discovery Mode</a>
+                    <a href="#interactive">Interactive Mode</a>
+                    <a href="#knowledge-processing-core">Processing Core</a>
+                    <a href="#PapersProcessingPipeline">Papers Processing Pipeline</a>
+                    <a href="/main" class="nav-btn">AstroBioHub, let's go! 🚀</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero" id="home">
+            <h1 class="hero-title">NASA Space Apps Challenge 2025</h1>
+            <p class="hero-subtitle">The Last Clawns + Apollo Algorithms</p>
+        </section>
+
+        <section id="team">
+            <h2 class="section-title">About Our Team</h2>
+            <div class="section-content">
+                <p>We are "The Last Clawns + Apollo Algorithms," a multidisciplinary team that combines creativity and technical precision to tackle the challenge of building a space biology knowledge engine. We are developing dynamic software that uses artificial intelligence and knowledge graphs to analyze and synthesize 608 scientific publications from NASA on biological experiments in space, transforming decades of complex research into accessible and actionable information for scientists, managers, and mission architects planning future explorations to the Moon and Mars.</p>
+                
+                <h3>Team Members</h3>
+                <div class="team-grid">
+                    <div class="team-member"><img src="image/1.png" alt="Photo of Yerson Joab Chirinos Vilca"><h4>YERSON JOAB CHIRINOS VILCA</h4><p>Frontend Developer</p></div>
+                    <div class="team-member"><img src="image/2.png" alt="Photo of Fernando Álvaro Medina Cóndor"><h4>Fernando Álvaro Medina Cóndor</h4><p>Researcher & Environmental Engineer</p></div>
+                    <div class="team-member"><img src="image/3.png" alt="Photo of Etner Yury Quispe Arqque"><h4>Etner Yury Quispe Arqque</h4><p>Frontend & Game Developer</p></div>
+                    <div class="team-member"><img src="image/4.png" alt="Photo of Jaime Antonio Rodriguez Phillco"><h4>JAIME ANTONIO RODRIGUEZ PHILLCO</h4><p>Data Engineer</p></div>
+                    <div class="team-member"><img src="image/5.png" alt="Photo of Eliazar Noa Llasccanoa"><h4>Eliazar Noa Llasccanoa</h4><p>Backend Developer</p></div>
+                    <div class="team-member"><img src="image/6.png" alt="Photo of Jose Emilio Atauchi Mamani"><h4>Jose Emilio Atauchi Mamani</h4><p>DevOps Engineer</p></div>
+                </div>
+                
+                <h3 style="margin-top: 60px;">Our Team at the Hackathon</h3>
+                <div class="hackathon-grid">
+                    <img src="image/7.png" alt="The team during the hackathon, photo 1">
+                    <img src="image/8.png" alt="The team during the hackathon, photo 2">
+                    <img src="image/9.png" alt="The team during the hackathon, photo 3">
+                    <img src="image/10.png" alt="The team during the hackathon, photo 4">
+                    <img src="image/e1.png" alt="The team during the hackathon, photo 5">
+                    <img src="image/e2.png" alt="The team during the hackathon, photo 6">
+                </div>
+            </div>
+        </section>
+
+        <section id="astrobiuhub">
+            <h2 class="section-title">AstroBioHub Frontend</h2>
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                <a href="https://github.com/STYersonH/AstroBioHub-Frontend" class="btn" target="_blank">
+                Project Link
+                </a>
+            </div>
+        
+            <div class="section-content">
+                <h3>The Problem We Solve</h3>
+                <p>We developed a platform designed to present information generated by NASA that is currently unstructured and difficult to explore dynamically. Our solution addresses this problem by organizing content on specific topics with clear and accessible language, allowing users to request clarifications on parts they do not understand. Additionally, it enables researchers to conduct studies more efficiently and systematically.</p>
+                <p>This way, years of research are optimally summarized, facilitating faster decision-making and more effective research. This project is important because it facilitates access to research for casual users and improves the productivity of scientists, thereby enhancing understanding and discovery in the field of space biology.</p>
+                
+                <h3>What is AstroBioHub?</h3>
+                <p>AstroBioHub transforms NASA's vast repository of space biology publications into accessible, understandable, and practical knowledge. By using artificial intelligence, natural language processing, semantic search, and knowledge graphs, it condenses hundreds of research articles into clear summaries, identifies key findings, highlights knowledge gaps, and provides information that helps both casual users and researchers explore space biology efficiently and effectively.</p>
+
+                <h3>How Does It Work?</h3>
+                <p>AstroBioHub processes 607 NASA publications acquired through automated web scraping, extracting the most relevant sections from each article, including abstracts, methodologies, results, and conclusions.</p>
+                <p>For this, we present three powerful interaction modes:</p>
+            </div>
+        </section>
+
+        <section id="academic">
+            <h2 class="section-title">ACADEMIC MODE</h2>
+            <div class="section-content">
+                <h4>Intelligent Summary Based on Papers</h4>
+                <p>First, you will be presented with a complete summary of the consulted topic. This summary is built from information extracted from multiple relevant scientific papers.</p>
+                <img src="image/11.png" alt="Diagram of the intelligent academic summary" class="content-image">
+                
+                <h4>Numbered Reference System</h4>
+                <p>Each statement or piece of data presented in the summary is supported by numbered references that indicate exactly which paper the information comes from. This ensures the traceability and verifiability of every piece of data presented.</p>
+                <img src="image/12.png" alt="Example of text with numbered references" class="content-image">
+                <p>Each number indicates the specific paper from which the information was extracted, allowing the researcher to verify the original source at any time.</p>
+                <img src="image/13.png" alt="Example of a numerical reference" class="content-image">
+
+                <h4>Side Panel of Papers</h4>
+                <p>On the left side of the interface, all referenced papers will be displayed, including key information such as:</p>
+                <ul><li>Authors</li><li>Full title</li><li>Year of publication</li></ul>
+                <img src="image/e3.png" alt="Example of the side panel with paper info" class="content-image">
+
+                <h4>Detailed Paper View</h4>
+                <p>When you click on any article, for example, article 3 "Meta-analysis of bone loss in space travelers", the platform shows you the most important information from the paper:</p>
+                <img src="image/14.png" alt="Detailed view of a selected paper" class="content-image">
+                <p>It presents:</p>
+                <ul><li><strong>Abstract:</strong> An overview of the study</li><li><strong>Results:</strong> The most relevant findings of the experiment</li></ul>
+                <p>According to studies on researcher behavior, these two sections are the most important for determining if a paper might be of interest without needing to read the entire document. This saves the researcher valuable time.</p>
+
+                <h4>Access to the Full Paper</h4>
+                <p>If the paper interests you and you want to read it in full, our platform will redirect you to the original NASA article by clicking on the shortcut arrow.</p>
+                <img src="image/15.png" alt="Redirect button to the original paper" class="content-image">
+
+                <h4>Quick Navigation with Interactive Map</h4>
+                <p>We also have a content map that, if the information is too extensive, allows you to navigate quickly between the different sections of the summary.</p>
+                <img src="image/16.png" alt="Interactive navigation map" class="content-image">
+                
+                <h4>Key Findings View</h4>
+                <p>We present a special section that captures the most relevant information from all the analyzed papers and displays it in a condensed form, facilitating the quick identification of the most important discoveries.</p>
+                <img src="image/17.png" alt="Key findings section" class="content-image">
+                
+                <h4>Analysis of Future Work and Conclusions</h4>
+                <p>We have implemented a feature that focuses specifically on the "Future Work" and "Conclusions" sections of the papers, as these sections are critical for identifying knowledge gaps and future research directions. Additionally, we perform a deeper analysis of the paper to extract additional insights.</p>
+                <img src="image/18.png" alt="Analysis of future work and conclusions" class="content-image">
+                
+                <h4>Traditional Paper Search</h4>
+                <p>If you wish to perform a more traditional paper search, we also include a conventional search engine. Simply click on "Paper Research" to access this functionality.</p>
+                <img src="image/19.png" alt="Traditional paper search engine" class="content-image">
+                
+                <h4>Interactive Knowledge Graph</h4>
+                <p>A particularly interesting feature we implemented is a complete knowledge graph that visualizes the relationships between all the papers.</p>
+                <img src="image/20.png" alt="Complete and interactive knowledge graph" class="content-image">
+
+                <h5>Graph Features:</h5>
+                <p><strong>Selected Papers Panel</strong><br>On the left side, you can find the papers you select in the graph. By clicking on any of them, you can see relevant information like the abstract and main results to quickly determine if it interests you.</p>
+                <img src="image/21.png" alt="Side panel of the graph with selected papers" class="content-image">
+                <p><strong>Access to the Full Paper from the Graph</strong><br>If you find the paper interesting, you can read the full text by clicking on the redirect arrow.</p>
+                <p><strong>Color-Coded Edge System</strong><br>We implemented an intelligent visual system with two types of edges:</p>
+                <ul><li><strong>Green edges:</strong> Indicate the articles that reference the paper you selected (citations received)</li><li><strong>Blue edges:</strong> Show the articles that your selected paper references in its bibliography (citations made)</li></ul>
+                <p>This system allows for a quick understanding of the network of influences and relationships between research works.</p>
+            </div>
+        </section>
+        
+        <section id="discover">
+            <h2 class="section-title">DISCOVERY MODE</h2>
+            <div class="section-content">
+                <p>This mode is designed for users who are not looking to research deeply, but rather want to learn for fun or general curiosity about space biology.</p>
+                
+                <h4>Simple and Accessible Summary</h4>
+                <p>We present a summary written in clear and simple language, accompanied by a navigation map so you can move quickly between sections.</p>
+                <img src="image/22.png" alt="Graph showing colored edges for citations" class="content-image">
+
+                <h4>Context and Importance</h4>
+                <p>We clearly explain why this topic is important and relevant, connecting scientific research with practical applications and the future of space exploration.</p>
+                <img src="image/23.png" alt="Simplified summary in discovery mode" class="content-image">
+                
+                <h4>Most Important Articles</h4>
+                <p>We present the most relevant articles on which the summary's information was based, selected for their impact and relevance in the field.</p>
+                <img src="image/24.png" alt="Section explaining the importance of the topic" class="content-image">
+                
+                <h4>Simplified Paper View</h4>
+                <p>When you click on one of the articles, it shows you only the most important information in a summarized and accessible language. If you want to see the full article at its original source, just click on the redirect arrow.</p>
+                <img src="image/25.png" alt="Most important articles highlighted" class="content-image">
+            </div>
+        </section>
+
+        <section id="interactive">
+            <h2 class="section-title">INTERACTIVE MODE</h2>
+            <div class="section-content">
+                <p>This mode is designed to offer an immersive and enjoyable 3D experience, showcasing the most important articles explained simply in a virtual space environment.</p>
+                <img src="image/26.png" alt="Simplified view of a paper" class="content-image">
+
+                <h4>Technological Development</h4>
+                <p>The project was developed in Godot 3.5, chosen specifically because it allows for quick and efficient exportation to HTML5. This was an incredible challenge, as we found no clear documentation for integrating it with the main project, which was developed in React Native. We overcame this technical challenge through innovative integration solutions.</p>
+                <img src="image/27.png" alt="3D environment of the interactive mode" class="content-image">
+
+                <h4>Immersive Experience</h4>
+                <p>In this experience, we want to provide a beautiful adventure, allowing you to enjoy each article in a unique three-dimensional space environment.</p>
+                <img src="image/28.png" alt="Diagram of the technical integration of Godot with React Native" class="content-image">
+                <img src="image/29.png" alt="Various captures of the 3D immersive experience" class="content-image">
+
+                <h4>Navigation Controls</h4>
+                <p>To move in the 3D environment:</p>
+                <ul><li><strong>W:</strong> Move forward</li><li><strong>A:</strong> Move left</li><li><strong>S:</strong> Move backward</li><li><strong>D:</strong> Move right</li><li><strong>Hold right-click + mouse movement:</strong> Rotate the camera to explore the environment</li></ul>
+
+                <h4>Interaction with Papers</h4>
+                <p>
+                In the 3D environment, each article is represented by a frame. 
+                To explore its content, simply approach the object and hover your cursor over it: 
+                a floating preview will appear with a brief summary of the paper. 
+                This preview allows you to quickly learn what the article is about before opening it. 
+                If you want to see the full content, click on the object to access the detailed summary or the full document.
+                </p>
+                <img src="image/30.png" alt="Interaction with a floating paper in the 3D environment" class="content-image">
+                
+                <h4>Fascinating Summaries</h4>
+                <p>Read our fascinating summaries presented visually from the most important articles and have a memorable experience in our space library.</p>
+                <img src="image/31.png" alt="Floating preview of a paper in 3D" class="content-image">
+            </div>
+        </section>
+        
+        <section id="knowledge-processing-core">
+            <h2 class="section-title">Logical Processes of the AstroBio Hub Backend</h2>
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                <a href="https://github.com/EliazarNoaLlas/AstroBioHub-backend" class="btn" target="_blank">
+                Project Link
+                </a>
+            </div>
+            <div class="section-content">
+                <div style="text-align: center;">
+                    <embed src="docs/flujo.pdf"
+                        type="application/pdf"
+                        width="90%"
+                        height="600px"
+                        style="border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;" />
+
+                    <p style="margin-top: 25px;">
+                        <a href="docs/flujo.pdf" target="_blank" class="btn">
+                            📄 Open PDF in New Tab
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="section-title">The Heart of AstroBioHub</h2>
+            <div class="section-content detailed-flow">
+                <p style="font-size: 1.3rem; text-align: center; color: var(--stardust);">AstroBioHub is a platform that helps scientists and researchers discover, analyze, and synthesize scientific literature intelligently. Instead of searching for articles one by one, researchers ask questions in natural language and receive deep analyses, connections between studies, and ready-to-use knowledge synthesis.</p>
+
+                <h3>How Does It Work? - System's Logical Flow</h3>
+
+                <h4>Step 1: The Researcher Asks a Question</h4>
+                <p>A scientist has a research question, for example:</p>
+                <p><em>"Which extremophilic organisms can survive in Mars-like conditions?"</em><br>
+                <em>"How does UV radiation affect bacteria in extreme environments?"</em></p>
+                <p>The researcher simply types their question into the platform. The system validates that the question is well-formed and accepts optional parameters such as date ranges or the desired number of results.</p>
+
+                <h4>Step 2: The System Decides the Search Strategy</h4>
+                <p>Not all questions require the same type of analysis. The system has an intelligent processing center that determines which strategy to use:</p>
+                <h5>Four Available Strategies:</h5>
+                <ul>
+                    <li><strong>Keyword Search:</strong> For simple and direct searches. Finds exact term matches.</li>
+                    <li><strong>Hybrid Search:</strong> Combines keyword matches with intelligent ranking. Balances precision and coverage.</li>
+                    <li><strong>Semantic Search:</strong> Understands the meaning, not just the exact words. Finds related concepts even if they are expressed differently.</li>
+                    <li><strong>Deep Analysis with AI:</strong> For complex questions that require synthesis. Generates summaries, extracts patterns, and finds knowledge gaps.</li>
+                </ul>
+
+                <h4>Step 3: Intelligent Document Search</h4>
+                <p>This is where the technical magic happens. The system uses two main techniques:</p>
+                <h5>A) Semantic Expansion - Understanding Concepts, Not Just Words</h5>
+                <p><strong>The Problem:</strong> If I search for "extremophilic microorganisms" but a paper uses "thermophilic bacteria," a simple search would miss it.<br>
+                <strong>The Solution:</strong> The system uses WordNet (a linguistic database) to expand concepts:<br>
+                <em>"extremophile" → also includes: thermophile, halophile, acidophile, psychrophile</em><br>
+                <em>"microorganism" → also includes: bacterium, archaea, microbe</em></p>
+                <p>Now the search finds all relevant documents, even if they use different terminology.</p>
+                
+                <h5>B) Intelligent Ranking with BM25 - Sorting by Real Relevance</h5>
+                <p><strong>The Problem:</strong> Not all articles that mention a term are equally relevant. We need a mathematical system that understands:<br>
+                A term that appears many times in a short paper is more relevant than one that appears a few times in a long paper. Rare and specific terms are more informative than common terms.</p>
+                <p><strong>The Solution - BM25 Algorithm:</strong> Imagine you have 1000 papers and are searching for "methanogens in ice":</p>
+                <ul>
+                    <li><strong>Intelligent Term Frequency:</strong> If "methanogens" appears 5 times in a 100-word paper → very relevant. If it appears 5 times in a 10,000-word paper → less relevant. But there's a limit: it doesn't matter if it appears 50 or 100 times, we already understand it's central.</li>
+                    <li><strong>Term Rarity:</strong> "methanogens" appears in only 10 out of 1000 papers → very specific term, high value. "in" appears in all papers → provides no information, low value.</li>
+                    <li><strong>Length Normalization:</strong> Long papers naturally have more words, which doesn't mean they are more relevant. The system adjusts for this automatically.</li>
+                </ul>
+                <p><strong>Conceptual Formula (without complex math):</strong><br>
+                <em>Relevance = How specific is this term? × How present is it in this specific document? ÷ How long is the document?</em></p>
+                <p><strong>Advantages of this Approach:</strong> Fast, Accurate, and Cost-effective.</p>
+
+                <h4>Step 4: Deep Analysis with Artificial Intelligence</h4>
+                <p>For complex questions, the system sends the most relevant articles to an AI model (Google Gemini) that acts as an expert research assistant.</p>
+                <h5>What Does the AI Do?</h5>
+                <p><strong>1. Structured Information Extraction:</strong> It reads each article and extracts: Organisms studied, Experimental conditions, Methods used, and Quantitative results.<br>
+                <em>Example: From the text: "Strains of Deinococcus radiodurans survived 15 kGy of gamma radiation at -80°C" the AI extracts: Organism: Deinococcus radiodurans, Condition 1: Gamma radiation, 15 kGy, Condition 2: Temperature, -80°C, Result: Survival confirmed.</em></p>
+                <p><strong>2. Multi-Level Synthesis:</strong> The AI generates four types of summaries for different needs: Executive, Technical, Educational, and Structured.</p>
+                <p><strong>3. Insight Discovery:</strong> The AI identifies Key Findings, Emerging Patterns, Contradictions, and Knowledge Gaps.<br>
+                <em>Example of Insight: "Three independent studies show that methanogens can survive at -196°C, but none have tested their metabolic activity at those temperatures. This represents a critical research opportunity."</em></p>
+                
+                <h4>Step 5: Knowledge Graph Construction</h4>
+                <p>The system doesn't just store information; it intelligently connects it like a network of concepts.</p>
+                <h5>What is a Knowledge Graph?</h5>
+                <p>Imagine a giant mind map where the Points (Nodes) are Articles, Authors, Organisms, etc., and the Lines (Connections) are the relationships between them.</p>
+                <h5>Analytical Power of the Graph:</h5>
+                <p>It allows for the discovery of research communities, identification of the most influential works, finding bridges between fields, and conceptual navigation (e.g., "Show all organisms studied under simulated Martian conditions").</p>
+                
+                <h4>Step 6: Visualization and Exploration</h4>
+                <p>The results are presented interactively and visually through connection networks, timelines, collaboration maps, and structured summaries with automatic citations.</p>
+                
+                <h4>Step 7: Continuous Learning</h4>
+                <p>The system improves with use through a feedback loop where it learns from the researcher's interactions to automatically adjust its algorithms and become more accurate.</p>
+                
+                <h3>Key System Advantages</h3>
+                <ul>
+                    <li><strong>Computational Efficiency:</strong> Does not require expensive GPUs to run. Fast searches even with thousands of documents.</li>
+                    <li><strong>Depth of Analysis:</strong> Combines speed (BM25) with intelligence (AI). Extracts information that would require days of manual reading.</li>
+                    <li><strong>Scalability:</strong> Designed to process thousands of papers and grow without architectural redesign.</li>
+                    <li><strong>Flexibility:</strong> Four search modes adapted to different needs and multiple output formats.</li>
+                </ul>
+                
+                <h3>Impact for Research</h3>
+                <p><strong>Before AstroBioHub:</strong> Weeks reading papers, missed connections, difficult to synthesize knowledge.<br>
+                <strong>With AstroBioHub:</strong> Intelligent synthesis in minutes, automatic discovery of relationships, semantic search that finds everything relevant.</p>
+                
+                <h3>Technical Foundations (Without Complexity)</h3>
+                <ul>
+                    <li><strong>Document Database (MongoDB):</strong> Stores the full text of articles.</li>
+                    <li><strong>Graph Database (Neo4j):</strong> Stores relationships between entities.</li>
+                    <li><strong>Natural Language Processing (NLTK + WordNet):</strong> Understands synonyms and relationships between words.</li>
+                    <li><strong>Language Model (Google Gemini):</strong> Advanced AI that "reads" papers and extracts information.</li>
+                    <li><strong>Ranking Algorithm (BM25):</strong> Proven mathematics for ordering documents by relevance.</li>
+                </ul>
+                
+                <h3>Future of the System</h3>
+                <p>Next Improvements: Optional Dense Embeddings, Reinforcement Learning, Multimodal Analysis, and Improved Explainability.</p>
+                
+                <h3>Conclusion</h3>
+                <p>AstroBioHub transforms the way scientists interact with literature. It is not just a faster search engine - it is an intelligent research assistant that understands questions, finds information, analyzes content, synthesizes knowledge, connects ideas, and continuously learns to better serve researchers.</p>
+            </div>
+        
+        </section>
+        <section id="PapersProcessingPipeline">
+            <div class="section-content">
+                <h2 class="section-title" style="font-size: 3rem; margin-top: 100px;">Vectorization of Papers for Semantic Search</h2>
+                <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                    <a href="https://github.com/FiboNacci-codder/Research-in-NLP" class="btn" target="_blank">
+                    Project Link
+                    </a>
+                </div>
+                <h3>GENERAL SUMMARY</h3>
+            
+                <h4>The Complete System</h4>
+                <pre><code>PHASE 1: WEB SCRAPING
+Messy HTML 
+→ Structured Sections 
+→ Clean Text
+→ Validated JSON
+
+PHASE 2: EMBEDDINGS
+Clean Text 
+→ Tokenization 
+→ BERT (self-attention in 12 layers)
+→ Vector of 768 numbers
+→ FAISS index for fast search
+
+RESULT:
+Papers searchable by MEANING, not just exact words
+</code></pre>
+            
+                <p><strong>Key advantage:</strong> A researcher can search for "radioresistant organisms" and find papers that talk about "DNA repair mechanisms" or "radiotolerant bacteria" even if they don't use the exact words from the search.</p>
+            
+                <hr style="border-color: rgba(255, 255, 255, 0.1); margin: 40px 0;">
+            
+                <h3>PHASE 1: CONTENT EXTRACTION</h3>
+            
+                <h4>Objective</h4>
+                <p>Convert 607 HTML/PDF publications from NASA into structured and processable data.</p>
+            
+                <h4>The Problem</h4>
+                <p>Scientific papers are in web format (HTML) with variable structure:</p>
+                <ul>
+                    <li>Different page layouts</li>
+                    <li>Inconsistent styles</li>
+                    <li>Content mixed with navigation, ads, etc.</li>
+                </ul>
+            
+                <h4>The Solution: Intelligent Web Scraping</h4>
+            
+                <p><strong>Input:</strong></p>
+                <pre><code>https://nasa.gov/publication/PMC7894523
+(Full HTML page with menus, banners, etc.)</code></pre>
+            
+                <p><strong>Process:</strong></p>
+            
+                <p>1. <strong>Identify sections</strong> using 3 strategies:</p>
+                <ul>
+                   <li>Search for HTML tags: <code>&lt;section id="abstract"&gt;</code>, <code>&lt;div class="methods"&gt;</code></li>
+                   <li>Search for headings: <code>&lt;h2&gt;Results&lt;/h2&gt;</code>, <code>&lt;h3&gt;Discussion&lt;/h3&gt;</code></li>
+                   <li>Recognize text patterns: "ABSTRACT:", "Materials and Methods:"</li>
+                </ul>
+            
+                <p>2. <strong>Extract content</strong> from each section:</p>
+                <pre><code>   ├── Abstract: "This study investigates..."
+   ├── Introduction: "Microgravity environments..."
+   ├── Methodology: "Bacterial cultures were grown..."
+   ├── Results: "Gene expression analysis revealed..."
+   ├── Discussion: "Our findings suggest..."
+   ├── Conclusions: "In conclusion, we demonstrate..."
+   ├── References: [Paper A, Paper B, ...]
+   └── Keywords: ["microgravity", "E. coli", "gene expression"]</code></pre>
+            
+                <p>3. <strong>Clean text:</strong></p>
+                <ul>
+                   <li>Remove residual HTML code: <code>&lt;span&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;br&gt;</code></li>
+                   <li>Normalize spaces: multiple spaces → a single one</li>
+                   <li>Correct special characters: <code>&amp;amp;</code> → <code>&amp;</code></li>
+                </ul>
+            
+                <h4>Quality Control</h4>
+            
+                <p>Each paper receives a <strong>completeness score:</strong></p>
+
+                <div class="formula-box">
+                    <div class="formula">
+                        <span class="var">Score</span>
+                        <span class="operator">=</span>
+                        <span class="sigma">∑</span>
+                        <span class="parenthesis">(</span>
+                        <span class="var">section_weight</span>
+                        <span class="operator">×</span>
+                        <span class="var">present</span>
+                        <span class="parenthesis">)</span>
+                    </div>
+                </div>
+
+                <table class="weights-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Weight</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Abstract</td>
+                            <td>25%</td>
+                            <td class="note">(critical)</td>
+                        </tr>
+                        <tr>
+                            <td>Methodology</td>
+                            <td>20%</td>
+                            <td class="note">(critical for reproducibility)</td>
+                        </tr>
+                        <tr>
+                            <td>Results</td>
+                            <td>20%</td>
+                            <td class="note">(critical)</td>
+                        </tr>
+                        <tr>
+                            <td>Introduction</td>
+                            <td>15%</td>
+                            <td class="note"></td>
+                        </tr>
+                        <tr>
+                            <td>Discussion</td>
+                            <td>10%</td>
+                            <td class="note"></td>
+                        </tr>
+                        <tr>
+                            <td>Conclusions</td>
+                            <td>5%</td>
+                            <td class="note"></td>
+                        </tr>
+                        <tr>
+                            <td>References</td>
+                            <td>3%</td>
+                            <td class="note"></td>
+                        </tr>
+                        <tr>
+                            <td>Keywords</td>
+                            <td>2%</td>
+                            <td class="note"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+                <p style="margin-top: 30px;"><strong>Examples:</strong></p>
+            
+                <div class="calc-example">
+                    <h5>Example 1:</h5>
+                    <div class="calc-step">Complete paper with all sections → Score = 1.0 ✅</div>
+                </div>
+
+                <div class="calc-example">
+                    <h5>Example 2:</h5>
+                    <div class="calc-step">Paper without discussion or conclusions → Score = 0.85 ✅</div>
+                </div>
+
+                <div class="calc-example">
+                    <h5>Example 3:</h5>
+                    <div class="calc-step">Paper with only an abstract → Score = 0.25 ❌ (rejected)</div>
+                </div>
+            
+                <p><strong>Criterion:</strong> Only papers with a score ≥ 0.60 are processed.</p>
+            
+                <h4>Output</h4>
+            
+                <p><strong>JSON Format:</strong></p>
+                <pre><code>{
+  "pmcid": "PMC7894523",
+  "title": "Effects of Microgravity on E. coli Gene Expression",
+  "authors": ["Smith, J.", "Johnson, A."],
+  "date": "2023-03-15",
+  "journal": "Nature Microbiology",
+  "sections": {
+    "abstract": "This study investigates how microgravity affects bacterial gene expression...",
+    "methodology": "E. coli cultures were grown in rotating wall vessels to simulate microgravity...",
+    "results": "RNA-seq analysis revealed 347 differentially expressed genes...",
+    "discussion": "Our findings indicate that microgravity triggers stress response pathways...",
+    "conclusions": "Bacteria adapt to microgravity through coordinated genetic responses..."
+  },
+  "metadata": {
+    "quality_score": 0.95,
+    "word_count": 4523
+  }
+}</code></pre>
+            
+                <h4>Result of Phase 1</h4>
+                <ul>
+                    <li>✅ 607 papers extracted</li>
+                    <li>✅ ~4,856 sections (average 8 per paper)</li>
+                    <li>✅ Clean and validated data</li>
+                </ul>
+            
+                <hr style="border-color: rgba(255, 255, 255, 0.1); margin: 40px 0;">
+            
+                <h3>PHASE 2: VECTORIZATION (EMBEDDINGS)</h3>
+            
+                <h4>Objective</h4>
+                <p>Convert human-readable text into numerical vectors that computers can compare mathematically.</p>
+            
+                <h4>What is an Embedding?</h4>
+            
+                <p><strong>Simple Analogy:</strong></p>
+            
+                <p>Imagine a map where each word is a point. Words with similar meanings are close together:</p>
+                <ul>
+                    <li>"bacteria" and "microorganism" → close</li>
+                    <li>"bacteria" and "rocket" → distant</li>
+                </ul>
+            
+                <p><strong>In reality:</strong></p>
+            
+                <p>Each text is converted into a vector of <strong>768 numbers</strong>.</p>
+            
+                <pre><code>Text: "Bacteria survive in microgravity"
+
+Embedding (simplified to 5 dimensions for visualization):
+[0.234, -0.567, 0.891, 0.123, -0.445]
+
+Real: 768 dimensions
+[0.234, -0.567, 0.891, ..., -0.332] (768 numbers)</code></pre>
+            
+                <h4>Why Vectors?</h4>
+            
+                <p>Because they allow for <strong>measuring similarity mathematically:</strong></p>
+            
+                <pre><code>Vector A: "bacteria in space"      → [0.8, 0.2, 0.1]
+Vector B: "microbes in microgravity" → [0.7, 0.3, 0.15]
+Vector C: "rocket fuel composition"   → [0.1, 0.9, 0.8]
+
+Similarity (cosine):
+  A vs B = 0.92 → very similar ✅ (same concept)
+  A vs C = 0.15 → not similar ✗ (different concepts)</code></pre>
+            
+                <h4>Model Used: S-PubMedBERT-MS-MARCO</h4>
+            
+                <p><strong>Why this specific model?</strong></p>
+            
+                <p>It is an AI model trained on:</p>
+                <ol>
+                    <li><strong>PubMed</strong> (millions of biomedical papers) → understands scientific terminology</li>
+                    <li><strong>MS-MARCO</strong> (Microsoft search dataset) → optimized for finding relevant information</li>
+                </ol>
+            
+                <p><strong>Advantage over general models:</strong></p>
+            
+                <pre><code>General model (like GPT):
+  Query: "thermophilic archaea"
+  May confuse with: "thermal architecture", "archaic themes"
+
+S-PubMedBERT:
+  Query: "thermophilic archaea"
+  Understands: extremophilic organisms that live at high temperatures
+  Finds: papers about Pyrococcus, Sulfolobus, etc.</code></pre>
+            
+                <h4>How BERT Works (Simplified)</h4>
+            
+                <p>BERT uses a mechanism called <strong>"Self-Attention"</strong>.</p>
+            
+                <p><strong>Central idea:</strong> To understand a word, you need the context of the words around it.</p>
+            
+                <p><strong>Example:</strong></p>
+            
+                <pre><code>Sentence: "Bacteria survive extreme radiation"
+
+What does "survive" mean?
+
+BERT analyzes:
+  - "bacteria" → WHO survives? (subject)
+  - "radiation" → WHAT does it survive? (object)
+  - "extreme" → WHAT KIND of radiation? (modifier)
+
+Calculate "attention weights":
+  survive → bacteria:  45% (high attention)
+  survive → radiation: 40% (high attention)
+  survive → extreme:   15% (low attention)
+
+Final vector for "survive" = 
+  45% info from "bacteria" + 40% info from "radiation" + 15% info from "extreme"
+</code></pre>
+            
+                <p><strong>Mathematical Formula (core of BERT):</strong></p>
+            
+                <div class="formula-box">
+                    <div class="formula" style="font-size: 1.5rem;">
+                        <span class="var">Attention</span>
+                        <span class="parenthesis">(</span>
+                        <span class="var">Q</span>
+                        <span class="operator">,</span>
+                        <span class="var">K</span>
+                        <span class="operator">,</span>
+                        <span class="var">V</span>
+                        <span class="parenthesis">)</span>
+                        <span class="operator">=</span>
+                        <span class="var">softmax</span>
+                        <span class="parenthesis">(</span>
+                        <span class="var">Q</span>
+                        <span class="operator">×</span>
+                        <span class="var">K</span>
+                        <sup style="color: #00ffff;">T</sup>
+                        <span class="operator">/</span>
+                        <span class="operator">√</span><span class="var">d</span>
+                        <span class="parenthesis">)</span>
+                        <span class="operator">×</span>
+                        <span class="var">V</span>
+                    </div>
+                </div>
+
+                <p style="margin-top: 20px;">Where:</p>
+                <ul>
+                    <li><strong>Q = Query:</strong> "What am I looking for?"</li>
+                    <li><strong>K = Key:</strong> "What information do I have?"</li>
+                    <li><strong>V = Value:</strong> "What information do I offer?"</li>
+                    <li><strong>d = 64</strong> (dimensionality, for normalization)</li>
+                    <li><strong>softmax</strong> = function that converts numbers into probabilities (sum to 100%)</li>
+                </ul>
+            
+                <p><strong>Numerical example:</strong></p>
+            
+                <pre><code>The word "survive" seeks context from other words:
+
+survive_query = [1.0, 0.5, 0.2]
+bacteria_key =  [0.9, 0.6, 0.1]
+radiation_key = [0.8, 0.4, 0.3]
+
+Step 1: Calculate similarity (dot product)
+  survive · bacteria =  1.0×0.9 + 0.5×0.6 + 0.2×0.1 = 1.22
+  survive · radiation = 1.0×0.8 + 0.5×0.4 + 0.2×0.3 = 1.06
+
+Step 2: Convert to probabilities (softmax)
+  weight_bacteria =   e^1.22 / (e^1.22 + e^1.06) = 0.54 (54%)
+  weight_radiation =  e^1.06 / (e^1.22 + e^1.06) = 0.46 (46%)
+
+Result:
+  The "survive" vector incorporates 54% of the context from "bacteria"
+                             and 46% of the context from "radiation"</code></pre>
+            
+                <h4>Complete Process: Text → Vector</h4>
+            
+                <p><strong>Step 1: Tokenization</strong></p>
+                <pre><code>Text: "Bacteria survive extreme radiation"
+Tokens: ["[CLS]", "Bacteria", "survive", "extreme", "radiation", "[SEP]"]
+         ↑ start                                                    ↑ end</code></pre>
+            
+                <p><strong>Step 2: Initial Embedding</strong></p>
+                <p>Each token is converted into a base vector (lookup table):</p>
+                <pre><code>"Bacteria" → [0.12, -0.34, 0.56, ..., 0.23]
+"survive"  → [0.45, -0.12, 0.78, ..., 0.67]
+...</code></pre>
+            
+                <p><strong>Step 3: Self-Attention (12 layers)</strong></p>
+                <p>Each layer refines the vectors by incorporating context:</p>
+                <pre><code>Layer 1: "survive" learns it is related to "bacteria" and "radiation"
+Layer 2: "survive" learns the type of survival (biological, not metaphorical)
+Layers 3-12: Progressive refinement of the meaning</code></pre>
+            
+                <p><strong>Step 4: Aggregation (Mean Pooling)</strong></p>
+                <p>BERT provides a vector for each word. To get a vector for the entire document:</p>
+                <pre><code>Output of all words:
+  bacteria:  [0.23, -0.45, 0.67, ..., 0.12]
+  survive:   [0.34, -0.23, 0.54, ..., 0.21]
+  extreme:   [0.12, -0.56, 0.43, ..., 0.18]
+  radiation: [0.45, -0.32, 0.61, ..., 0.25]
+
+Average (mean pooling):
+  doc_embedding = (vector_bacteria + vector_survive + ... + vector_radiation) / 4
+  doc_embedding = [0.285, -0.39, 0.5625, ..., 0.19]</code></pre>
+            
+                <p><strong>Final Output:</strong></p>
+                <pre><code>"Bacteria survive extreme radiation" 
+→ [0.285, -0.39, 0.56, ..., 0.19]  (768 numbers)</code></pre>
+            
+                <h4>Strategy by Sections</h4>
+            
+                <p>Not just one embedding is created per paper, but <strong>one per section:</strong></p>
+                <pre><code>Paper PMC7894523:
+  ├── embedding_abstract:      [0.23, -0.45, ...]
+  ├── embedding_methodology:   [0.34, -0.12, ...]
+  ├── embedding_results:       [0.56, -0.23, ...]
+  └── embedding_conclusions:   [0.12, -0.67, ...]
+
+Total: 607 papers × ~8 sections = 4,856 embeddings</code></pre>
+            
+                <p><strong>Reason:</strong> Allows searching in specific sections</p>
+                <ul>
+                    <li>Search for similar methodologies</li>
+                    <li>Compare only results</li>
+                    <li>Etc.</li>
+                </ul>
+            
+                <h4>Index for Fast Searching: FAISS</h4>
+            
+                <p><strong>Problem:</strong> With 4,856 vectors of 768 dimensions, how to search quickly?</p>
+                <p><strong>Solution:</strong> FAISS (Facebook AI Similarity Search)</p>
+            
+                <pre><code>Specialized data structure:
+  - Indexes vectors for search in <50ms
+  - Uses approximations for large corpora (millions of documents)</code></pre>
+            
+                <h4>Similarity Measurement: Cosine Similarity</h4>
+            
+                <p><strong>Formula:</strong></p>
+                
+                <div class="formula-box">
+                    <div class="formula" style="font-size: 1.4rem;">
+                        <span class="var">cosine_similarity</span>
+                        <span class="parenthesis">(</span>
+                        <span class="var">A</span>
+                        <span class="operator">,</span>
+                        <span class="var">B</span>
+                        <span class="parenthesis">)</span>
+                        <span class="operator">=</span>
+                        <span class="parenthesis">(</span>
+                        <span class="var">A</span>
+                        <span class="operator">·</span>
+                        <span class="var">B</span>
+                        <span class="parenthesis">)</span>
+                        <span class="operator">/</span>
+                        <span class="parenthesis">(</span>
+                        <span class="operator">||</span><span class="var">A</span><span class="operator">||</span>
+                        <span class="operator">×</span>
+                        <span class="operator">||</span><span class="var">B</span><span class="operator">||</span>
+                        <span class="parenthesis">)</span>
+                    </div>
+                </div>
+
+                <p style="margin-top: 20px;">Where:</p>
+                <ul>
+                    <li><strong>A · B</strong> = dot product = sum(A[i] × B[i]) for all dimensions</li>
+                    <li><strong>||A||</strong> = vector length = √(sum(A[i]²))</li>
+                </ul>
+                
+                <p><strong>Range:</strong> -1 to 1</p>
+                <ul>
+                    <li><strong>1.0</strong> = identical vectors (maximum similarity)</li>
+                    <li><strong>0.5</strong> = similar vectors</li>
+                    <li><strong>0.0</strong> = perpendicular vectors (no relationship)</li>
+                    <li><strong>-1.0</strong> = opposite vectors</li>
+                </ul>
+            
+                <p><strong>Example:</strong></p>
+                <pre><code>Query: "bacteria in space" → vector_q = [0.8, 0.3, 0.1]
+
+Paper 1: "Bacterial growth in microgravity" → vector_p1 = [0.7, 0.4, 0.15]
+Paper 2: "Rocket propulsion systems" → vector_p2 = [0.1, 0.2, 0.9]
+
+Calculation:
+  q · p1 = 0.8×0.7 + 0.3×0.4 + 0.1×0.15 = 0.56 + 0.12 + 0.015 = 0.695
+  ||q|| = √(0.8² + 0.3² + 0.1²) = √(0.64 + 0.09 + 0.01) = √0.74 = 0.86
+  ||p1|| = √(0.7² + 0.4² + 0.15²) = √0.7125 = 0.84
+  
+  cosine(q, p1) = 0.695 / (0.86 × 0.84) = 0.695 / 0.72 = 0.96 ✅ very relevant
+
+  cosine(q, p2) = 0.13 ❌ not relevant
+
+The system returns Paper 1 as the main result</code></pre>
+            
+                <h4>Result of Phase 2</h4>
+                <ul>
+                    <li>✅ <strong>4,856 embeddings</strong> of 768 dimensions each</li>
+                    <li>✅ <strong>FAISS index</strong> built for search in <50ms</li>
+                    <li>✅ <strong>Semantic search:</strong> finds similar concepts even if the words are different</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text"><strong>Additional Resources</strong><br>Royalty-free music used in the interactive mode:<br><a href="https://pixabay.com/es/music/search/clasica%20instrumental/" target="_blank">https://pixabay.com/es/music/search/clasica%20instrumental/</a></p>
+            <br>
+            <p class="footer-text">Project developed for the NASA Space Apps Challenge 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const starCount = 400;
+
+        function setupCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        class Star {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * 1500 + 500;
+                this.prevZ = this.z;
+                this.speed = Math.random() * 0.5 + 0.5;
+            }
+            update() {
+                this.prevZ = this.z;
+                this.z -= this.speed * 3;
+                if (this.z <= 1) { this.reset(); this.z = Math.random() * 100 + 1500; }
+            }
+            draw() {
+                const sx = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const sy = (this.y - canvas.height / 2) * (canvas.height / this.z) + canvas.height / 2;
+                const prevSx = (this.x - canvas.width / 2) * (canvas.width / this.prevZ) + canvas.width / 2;
+                const prevSy = (this.y - canvas.height / 2) * (canvas.height / this.prevZ) + canvas.height / 2;
+                const size = (1 - this.z / 2000) * 4;
+                const opacity = 1 - this.z / 2000;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.lineWidth = size;
+                ctx.beginPath();
+                ctx.moveTo(prevSx, prevSy);
+                ctx.lineTo(sx, sy);
+                ctx.stroke();
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => { star.update(); star.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', setupCanvas);
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        setupCanvas();
+        animate();
+    </script>
+</body>
+</html>

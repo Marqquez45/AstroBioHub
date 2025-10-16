@@ -1,0 +1,371 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "Skeletal responses to space flight and the bed rest analog",
+      "group": "Paper",
+      "year": 2007,
+      "authors": [
+        "LeBlanc A. D.",
+        "Schneider V. S."
+      ],
+      "citationCount": 6
+    },
+    {
+      "id": 2,
+      "name": "Bone markers, calcium metabolism, and kinetics during extended-duration space flight",
+      "group": "Paper",
+      "year": 2005,
+      "authors": [
+        "Smith S. M.",
+        "Whedon G. D."
+      ],
+      "citationCount": 5
+    },
+    {
+      "id": 3,
+      "name": "Meta-analysis of bone loss in space travelers",
+      "group": "Paper",
+      "year": 2020,
+      "authors": [
+        "Stavnichuk M.",
+        "Rittweger J."
+      ],
+      "citationCount": 0
+    },
+    {
+      "id": 4,
+      "name": "Effects of microgravity on bone structure and function",
+      "group": "Paper",
+      "year": 2022,
+      "authors": [
+        "Man J.",
+        "Zhou J."
+      ],
+      "citationCount": 6
+    },
+    {
+      "id": 5,
+      "name": "Immune system dysregulation and skeletal health in spaceflight",
+      "group": "Paper",
+      "year": 2008,
+      "authors": [
+        "Crucian B. E.",
+        "Stowe R. P."
+      ],
+      "citationCount": 0
+    },
+    {
+      "id": 6,
+      "name": "Long-duration bed rest as analog to microgravity bone loss",
+      "group": "Paper",
+      "year": 2016,
+      "authors": [
+        "Hargens A. R.",
+        "Vico L."
+      ],
+      "citationCount": 7
+    },
+    {
+      "id": 7,
+      "name": "Therapeutic NELL-1 delivery to mitigate microgravity bone loss",
+      "group": "Paper",
+      "year": 2023,
+      "authors": [
+        "Soo C.",
+        "Huang Y. F."
+      ],
+      "citationCount": 1
+    },
+    {
+      "id": 8,
+      "name": "Disuse osteoporosis: mechanisms and countermeasures",
+      "group": "Paper",
+      "year": 2016,
+      "authors": [
+        "Vico L.",
+        "Collet P."
+      ],
+      "citationCount": 1
+    },
+    {
+      "id": 9,
+      "name": "In-flight resistive exercise approaches on ISS",
+      "group": "Paper",
+      "year": 2016,
+      "authors": [
+        "Petersen N.",
+        "Frings-Meuthen P."
+      ],
+      "citationCount": 4
+    },
+    {
+      "id": 10,
+      "name": "Calcium kinetics before, during, and after spaceflight",
+      "group": "Paper",
+      "year": 2012,
+      "authors": [
+        "Johnson P. C.",
+        "Davis C. M."
+      ],
+      "citationCount": 2
+    },
+    {
+      "id": 11,
+      "name": "Bone recovery limitations post long-duration flight",
+      "group": "Paper",
+      "year": 2018,
+      "authors": [
+        "Strope J.",
+        "Orwoll E. S."
+      ],
+      "citationCount": 2
+    },
+    {
+      "id": 12,
+      "name": "Nutrition and bone health in extended missions",
+      "group": "Paper",
+      "year": 2012,
+      "authors": [
+        "Zwart S. R.",
+        "Smith S. M."
+      ],
+      "citationCount": 3
+    },
+    {
+      "id": 13,
+      "name": "Wearable loading systems for skeletal adaptation in microgravity",
+      "group": "Paper",
+      "year": 2024,
+      "authors": [
+        "Khan S. U.",
+        "Chowdhury R."
+      ],
+      "citationCount": 0
+    },
+    {
+      "id": 14,
+      "name": "Predicting bone degradation via vision transformer models",
+      "group": "Paper",
+      "year": 2023,
+      "authors": [
+        "Hashemi M. S.",
+        "Rahman M. A."
+      ],
+      "citationCount": 0
+    },
+    {
+      "id": 15,
+      "name": "Musculoskeletal adaptation and wearable countermeasures in space",
+      "group": "Paper",
+      "year": 2024,
+      "authors": [
+        "Ul Ebad K.",
+        "Kim J. H."
+      ],
+      "citationCount": 3
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 2,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "value": 2
+    },
+    {
+      "source": 3,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "value": 2
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "value": 2
+    },
+    {
+      "source": 5,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "value": 2
+    },
+    {
+      "source": 6,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 6,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "value": 2
+    },
+    {
+      "source": 7,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 7,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 7,
+      "target": 12,
+      "value": 2
+    },
+    {
+      "source": 8,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 8,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "value": 2
+    },
+    {
+      "source": 9,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "value": 2
+    },
+    {
+      "source": 9,
+      "target": 15,
+      "value": 2
+    },
+    {
+      "source": 10,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 10,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 11,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 11,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "value": 2
+    },
+    {
+      "source": 12,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 12,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 12,
+      "target": 9,
+      "value": 2
+    },
+    {
+      "source": 13,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 13,
+      "target": 9,
+      "value": 2
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "value": 2
+    },
+    {
+      "source": 14,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 14,
+      "target": 7,
+      "value": 2
+    },
+    {
+      "source": 14,
+      "target": 12,
+      "value": 2
+    },
+    {
+      "source": 15,
+      "target": 1,
+      "value": 2
+    },
+    {
+      "source": 15,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 15,
+      "target": 11,
+      "value": 2
+    }
+  ]
+}
